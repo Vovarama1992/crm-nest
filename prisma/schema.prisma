@@ -1,0 +1,38 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  surname   String
+  password  String
+  roleName  String
+  role      Role   @relation(fields: [roleName], references: [name])
+}
+
+model Role {
+  id                         Int      @id @default(autoincrement())
+  name                       String   @unique
+  users                      User[]
+  see_self                   Boolean
+  summary_table              Boolean
+  departures                 Boolean
+  salary_reports_himself     Boolean
+  salary_reports_common      Boolean
+  salary_reports_sellers     Boolean
+  finances                   Boolean
+  my_sales                   Boolean
+  common_sales               Boolean
+  suppliers                  Boolean
+  procurements               Boolean
+}
